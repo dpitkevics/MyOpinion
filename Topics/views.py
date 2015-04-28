@@ -39,10 +39,11 @@ def topics_by_tag(request, slug):
     topic_list = topic_tag.topics.all()
 
     context = {
+        'topic_tag': topic_tag,
         'topic_list': topic_list,
     }
 
-    return render(request, 'Topics/index.html', context)
+    return render(request, 'Topics/topics_by_tag.html', context)
 
 
 def topics_by_category(request, slug):
@@ -51,7 +52,8 @@ def topics_by_category(request, slug):
     topic_list = topic_category.topic_set.all()
 
     context = {
+        'topic_category': topic_category,
         'topic_list': topic_list,
     }
 
-    return render(request, 'Topics/index.html', context)
+    return render(request, 'Topics/topics_by_category.html', context)
