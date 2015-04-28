@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load settings %}
+
+{% block title %}{% title 'Registration Successful' %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <h1>{% trans 'Registration Successful' %}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            {% url 'Users:login' as login_url %}
+            {% blocktrans with login_url=login_url %}
+                <p>
+                    You have successfully registered. You may now login.
+                </p>
+                <p>
+                    <a href="{{ login_url }}" class="btn btn-success">Login now</a>
+                </p>
+            {% endblocktrans %}
+        </div>
+    </div>
+{% endblock %}

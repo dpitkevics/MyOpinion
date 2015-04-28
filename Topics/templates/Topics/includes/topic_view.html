@@ -1,0 +1,33 @@
+{% load i18n %}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <a href="{% url 'Topics:view_opinion' slug=topic.slug %}">
+            <h2>{{ topic }}</h2>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <p>{{ topic.description|truncatechars:100 }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        {% trans 'Tags' %}:
+        {% for topic_tag in topic.topictag_set.all %}
+            <a href="{% url 'Topics:view_by_tag' slug=topic_tag.slug %}" class="span-link">
+                <span class="label label-info">{{ topic_tag }}</span>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-6 col-sm-12 text-right">
+        {% trans 'Category' %}:
+        <a href="{% url 'Topics:view_by_category' slug=topic.category.slug %}" class="span-link">
+            <span class="label label-primary">{{ topic.category }}</span>
+        </a>
+    </div>
+</div>

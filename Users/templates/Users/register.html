@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load bootstrap3 %}
+{% load i18n %}
+{% load settings %}
+
+{% block title %}{% title 'Registration' %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <h1>{% trans 'User Registration' %}</h1>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <form method="post">
+                {% csrf_token %}
+                {% bootstrap_form user_form %}
+                {% bootstrap_form user_profile_form %}
+
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">
+                      {% bootstrap_icon "thumbs-up" %} {% trans 'Register' %}
+                    </button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
