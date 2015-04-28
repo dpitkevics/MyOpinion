@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load bootstrap3 %}
 
 <div class="row">
     <div class="col-md-12 col-sm-12">
@@ -16,6 +17,20 @@
 
 <div class="row">
     <div class="col-md-6 col-sm-12">
+        {% blocktrans %}
+            Comments: <span class="label label-success">6</span>
+        {% endblocktrans %}
+    </div>
+
+    <div class="col-md-6 col-sm-12 text-right">
+        {% blocktrans %}
+            Latest action: <span class="label label-warning">28. April 2015 22:59</span>
+        {% endblocktrans %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
         {% trans 'Tags' %}:
         {% for topic_tag in topic.topictag_set.all %}
             <a href="{% url 'Topics:view_by_tag' slug=topic_tag.slug %}" class="span-link">
@@ -28,6 +43,15 @@
         {% trans 'Category' %}:
         <a href="{% url 'Topics:view_by_category' slug=topic.category.slug %}" class="span-link">
             <span class="label label-primary">{{ topic.category }}</span>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 text-center">
+        <a href="{% url 'Topics:view_opinion' slug=topic.slug %}#comment" class="btn btn-primary">
+            {% bootstrap_icon 'pencil' %}
+            {% trans 'Add your opinion to discussion' %}
         </a>
     </div>
 </div>
