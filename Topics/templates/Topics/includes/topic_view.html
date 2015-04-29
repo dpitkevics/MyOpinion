@@ -1,10 +1,11 @@
 {% load i18n %}
 {% load bootstrap3 %}
+{% load comments %}
 
 <div class="row">
     <div class="col-md-12 col-sm-12">
         <a href="{% url 'Topics:view_opinion' slug=topic.slug %}">
-            <h2>{{ topic }}</h2>
+            <h1>{{ topic }}</h1>
         </a>
     </div>
 </div>
@@ -17,19 +18,20 @@
 
 <div class="row">
     <div class="col-md-6 col-sm-12">
-        {% blocktrans %}
-            Comments: <span class="label label-success">6</span>
+        {% get_comment_count for topic as topic_comment_count %}
+        {% blocktrans with topic_comment_count=topic_comment_count %}
+            Comments: <span class="label label-success">{{ topic_comment_count }}</span>
         {% endblocktrans %}
     </div>
 
     <div class="col-md-6 col-sm-12 text-right">
-        {% blocktrans %}
-            Latest action: <span class="label label-warning">28. April 2015 22:59</span>
+        {% blocktrans with latest_action_at=topic.latest_action_at|date:'d. F Y H:i' %}
+            Latest action: <span class="label label-warning">{{ latest_action_at }}</span>
         {% endblocktrans %}
     </div>
 </div>
 
-<div class="row">
+<div class="row mg-bottom-sm">
     <div class="col-md-6 col-sm-12">
         {% trans 'Tags' %}:
         {% for topic_tag in topic.topictag_set.all %}

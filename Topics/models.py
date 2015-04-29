@@ -36,9 +36,14 @@ class Topic(TimestampModel):
     title = models.CharField(max_length=258)
     description = models.TextField()
     slug = models.SlugField()
+    latest_action_at = models.DateTimeField(auto_now_add=True)
 
     author = models.ForeignKey(User)
     category = models.ForeignKey(TopicCategory)
+
+    def __init__(self, *args, **kwargs):
+        self._meta.module_name = self._meta.model_name
+        super(Topic, self).__init__(*args, **kwargs)
 
     class Meta:
         ordering = ['-created_at']

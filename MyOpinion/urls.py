@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^', include('Topics.urls', namespace='Topics')),
     url(r'^user/', include('Users.urls', namespace='Users')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^comments/', include('django_comments.urls')),
 ]

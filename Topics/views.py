@@ -5,6 +5,8 @@ from django.utils.translation import ugettext as _
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
+import Comments
+
 from .models import Topic, TopicTag, TopicCategory
 
 
@@ -25,6 +27,8 @@ def view_topic(request, slug):
         messages.add_message(request, messages.ERROR, _('Topic not found'))
 
         return HttpResponseRedirect(reverse('Topics:index'))
+
+    Comments.set_form_user(request.user)
 
     context = {
         'topic': topic,

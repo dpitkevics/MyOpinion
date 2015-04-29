@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 APP_NAME = 'My Opinion'
+SITE_ID = 1
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -39,9 +40,13 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
+    'django.contrib.sites',
+    'django_comments',
+    'widget_tweaks',
     'MyOpinion',
     'Users',
     'Topics',
+    'Comments',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -123,3 +128,7 @@ BOOTSTRAP3 = {
     'include_jquery': True,
     'theme_url': '/static/css/bootstrap-theme.min.css',
 }
+
+# Comments Configuration
+COMMENTS_ALLOW_PROFANITIES = True
+COMMENTS_APP = 'Comments'

@@ -2,6 +2,8 @@
 
 {% load i18n %}
 {% load settings %}
+{% load comments %}
+{% load bootstrap3 %}
 
 {% block title %}{% title topic.title %}{% endblock %}
 
@@ -16,9 +18,36 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            {% get_comment_list for topic as topic_comment_list %}
+            {% for topic_comment in topic_comment_list %}
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        {% if topic_comment.user %}
+                            {{ topic_comment.user.username }}: {{ topic_comment.comment }}
+                        {% else %}
+                            {{ topic_comment.user_name }}: {{ topic_comment }}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <div class="row" id="comment">
         <div class="col-md-12 col-sm-12">
-            Comment Form
+            {% get_comment_form for topic as form %}
+            <form action="{% comment_form_target %}" method="POST">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">
+                      {% bootstrap_icon "thumbs-up" %} {% trans 'Add Comment' %}
+                    </button>
+                {% endbuttons %}
+            </form>
         </div>
     </div>
 {% endblock %}

@@ -18,3 +18,7 @@ a:hover {
 .topic-box:hover {
     background: rgba(0, 171, 144, 0.07);
 }
+
+.mg-bottom-sm {
+    margin-bottom: 10px;
+}
