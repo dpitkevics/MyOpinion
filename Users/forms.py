@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
 from django.contrib.auth.forms import UserChangeForm as BaseUserChangeForm
 from django.contrib.auth.forms import AuthenticationForm as BaseAuthenticationForm
+from django.core.files.images import get_image_dimensions
 
 from Users.models import UserProfile
 
@@ -24,4 +25,4 @@ class AuthenticationForm(BaseAuthenticationForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['rating']
+        fields = ['picture']

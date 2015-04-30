@@ -1,9 +1,9 @@
-from django_comments.models import Comment
+from .models import TopicComment
 from .forms import TopicCommentForm
 
 
 def get_model():
-    return Comment
+    return TopicComment
 
 
 def get_form():

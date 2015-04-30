@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Topics', '0001_initial'),
+        ('Users', '0001_initial'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='topictag',
-            name='topics',
-            field=models.ManyToManyField(null=True, to='Topics.Topic'),
+            model_name='userprofile',
+            name='avatar',
+            field=models.ImageField(null=True, upload_to=''),
         ),
     ]

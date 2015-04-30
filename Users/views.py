@@ -32,6 +32,10 @@ class RegisterView(View):
             user = user_form.save()
             user_profile = user_profile_form.save(commit=False)
             user_profile.user = user
+
+            if 'picture' in request.FILES:
+                user_profile.picture = request.FILES['picture']
+
             user_profile.save()
 
             messages.add_message(request, messages.SUCCESS, _('User successfully registered. You may now login.'))

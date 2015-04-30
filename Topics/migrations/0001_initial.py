@@ -15,12 +15,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Topic',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('title', models.CharField(max_length=258)),
                 ('description', models.TextField()),
                 ('slug', models.SlugField()),
+                ('latest_action_at', models.DateTimeField(auto_now_add=True)),
                 ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -30,7 +31,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TopicCategory',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('title', models.CharField(max_length=258)),
@@ -38,19 +39,19 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name': 'Topic Category',
-                'ordering': ['title'],
                 'verbose_name_plural': 'Topic Categories',
+                'ordering': ['title'],
             },
         ),
         migrations.CreateModel(
             name='TopicTag',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('title', models.CharField(max_length=64)),
                 ('slug', models.SlugField()),
-                ('topics', models.ManyToManyField(to='Topics.Topic')),
+                ('topics', models.ManyToManyField(to='Topics.Topic', blank=True)),
             ],
             options={
                 'abstract': False,

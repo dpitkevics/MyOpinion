@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.template.defaultfilters import slugify
+from django.utils.timezone import datetime
 
 
 class TimestampModel(models.Model):
@@ -50,6 +51,10 @@ class Topic(TimestampModel):
 
     def __str__(self):
         return self.title
+
+    def touch(self):
+        self.latest_action_at = datetime.now()
+        self.save()
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):

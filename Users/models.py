@@ -4,4 +4,4 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User)
-    rating = models.FloatField(default=0)
+    picture = models.ImageField(upload_to='profile_images', blank=True)
