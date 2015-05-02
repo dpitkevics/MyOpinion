@@ -1,5 +1,4 @@
 django
 mysqlclient
 django-bootstrap3
-django-contrib-comments
 Pillow

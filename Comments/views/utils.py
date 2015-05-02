@@ -3,9 +3,10 @@ A few bits of helper functions for comment views.
 """
 
 import textwrap
+
 try:
     from urllib.parse import urlencode
-except ImportError:     # Python 2
+except ImportError:  # Python 2
     from urllib import urlencode
 
 from django.http import HttpResponseRedirect
@@ -14,7 +15,8 @@ from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.http import is_safe_url
 
-import django_comments
+import Comments
+
 
 def next_redirect(request, fallback, **get_kwargs):
     """
@@ -42,22 +44,24 @@ def next_redirect(request, fallback, **get_kwargs):
         next += joiner + urlencode(get_kwargs) + anchor
     return HttpResponseRedirect(next)
 
+
 def confirmation_view(template, doc="Display a confirmation view."):
     """
     Confirmation view generator for the "comment was
     posted/flagged/deleted/approved" views.
     """
+
     def confirmed(request):
         comment = None
         if 'c' in request.GET:
             try:
-                comment = django_comments.get_model().objects.get(pk=request.GET['c'])
+                comment = Comments.get_model().objects.get(pk=request.GET['c'])
             except (ObjectDoesNotExist, ValueError):
                 pass
         return render_to_response(template,
-            {'comment': comment},
-            context_instance=RequestContext(request)
-        )
+                                  {'comment': comment},
+                                  context_instance=RequestContext(request)
+                                  )
 
     confirmed.__doc__ = textwrap.dedent("""\
         %s
@@ -67,5 +71,5 @@ def confirmation_view(template, doc="Display a confirmation view."):
             comment
                 The posted comment
         """ % (doc, template)
-    )
+                                        )
     return confirmed

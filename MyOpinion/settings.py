@@ -41,8 +41,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'bootstrap3',
     'django.contrib.sites',
-    'django_comments',
-    'widget_tweaks',
     'MyOpinion',
     'Users',
     'Topics',

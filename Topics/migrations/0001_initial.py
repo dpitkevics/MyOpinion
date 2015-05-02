@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Topic',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('title', models.CharField(max_length=258)),
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TopicCategory',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('title', models.CharField(max_length=258)),
@@ -39,19 +39,19 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name': 'Topic Category',
-                'verbose_name_plural': 'Topic Categories',
                 'ordering': ['title'],
+                'verbose_name_plural': 'Topic Categories',
             },
         ),
         migrations.CreateModel(
             name='TopicTag',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('title', models.CharField(max_length=64)),
                 ('slug', models.SlugField()),
-                ('topics', models.ManyToManyField(to='Topics.Topic', blank=True)),
+                ('topics', models.ManyToManyField(blank=True, to='Topics.Topic')),
             ],
             options={
                 'abstract': False,
