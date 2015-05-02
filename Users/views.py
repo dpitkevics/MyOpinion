@@ -7,11 +7,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from PIL import Image as PImage
-from os.path import join as pjoin
-
 from Users import forms
-from MyOpinion.settings import MEDIA_ROOT
 
 
 class RegisterView(View):

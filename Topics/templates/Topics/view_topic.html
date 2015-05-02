@@ -4,6 +4,7 @@
 {% load settings %}
 {% load comments %}
 {% load bootstrap3 %}
+{% load staticfiles %}
 
 {% block title %}{% title topic.title %}{% endblock %}
 
@@ -27,7 +28,12 @@
                         <div class="row">
                             <div class="col-md-2 col-sm-2">
                                 <div class="comment-image-wrapper">
-                                    <img src="http://www.dotnetcodesg.com/Register/UserImage/Default.png" alt="Anonymous User" />
+                                    {% if topic_comment.user and topic_comment.user.profile.picture %}
+                                        <img src="{{ MEDIA_URL }}{{ topic_comment.user.profile.picture }}"
+                                             alt="{% blocktrans with topic_comment.user.username as username %}Profile image for {{ username }}{% endblocktrans %}"/>
+                                    {% else %}
+                                        <img src="{% static 'images/default-user.png' %}" alt="Anonymous User"/>
+                                    {% endif %}
                                 </div>
                             </div>
 
@@ -67,13 +73,13 @@
         <div class="col-md-12 col-sm-12">
             {% get_comment_form for topic as form %}
             <form action="{% url 'Comments:comments-post-comment' %}" method="POST">
-                <input type="hidden" name="next" value="{{ request.path }}" />
+                <input type="hidden" name="next" value="{{ request.path }}"/>
                 {% csrf_token %}
                 {% bootstrap_form form %}
 
                 {% buttons %}
                     <button type="submit" class="btn btn-primary">
-                      {% bootstrap_icon "thumbs-up" %} {% trans 'Add Comment' %}
+                        {% bootstrap_icon "envelope" %} {% trans 'Add Comment' %}
                     </button>
                 {% endbuttons %}
             </form>
