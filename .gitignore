@@ -53,3 +53,4 @@ docs/_build/
 
 # Additional
 Jooglin/local_settings.py
+media/*
