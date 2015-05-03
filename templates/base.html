@@ -3,6 +3,7 @@
 {% load opinions %}
 {% load i18n %}
 {% load staticfiles %}
+{% load templating %}
 
 <!DOCTYPE html>
 <html>
@@ -12,6 +13,8 @@
 
     {% bootstrap_css %}
     <link href="{% static 'css/style.css' %}" media="all" rel="stylesheet">
+
+    {% render_css_files %}
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -102,5 +105,6 @@
 </div>
 
 {% bootstrap_javascript %}
+{% render_js_files %}
 </body>
 </html>

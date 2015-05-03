@@ -1,7 +1,7 @@
 from __future__ import absolute_import
+import html.parser
 
 from django import http
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import models
 from django.shortcuts import render_to_response
@@ -11,10 +11,15 @@ from django.utils.html import escape
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST
 from django.core.urlresolvers import reverse
+from django.contrib import messages
+from django.utils.translation import ugettext as _
+
+from MyOpinion.lib.integer import num_decode
 
 import Comments
 from Comments import signals
 from Comments.views.utils import next_redirect, confirmation_view
+
 
 class CommentPostBadRequest(http.HttpResponseBadRequest):
     """
@@ -22,10 +27,11 @@ class CommentPostBadRequest(http.HttpResponseBadRequest):
     nice-ish error message will be displayed (for debugging purposes), but in
     production mode a simple opaque 400 page will be displayed.
     """
+
     def __init__(self, why):
+        why = html.parser.unescape(why)
         super(CommentPostBadRequest, self).__init__()
-        if settings.DEBUG:
-            self.content = render_to_string("comments/400-debug.html", {"why": why})
+        self.content = render_to_string("comments/400-debug.html", {"why": why})
 
 
 @csrf_protect
@@ -59,15 +65,15 @@ def post_comment(request, next=None, using=None):
     except AttributeError:
         return CommentPostBadRequest(
             "The given content-type %r does not resolve to a valid model." % \
-                escape(ctype))
+            escape(ctype))
     except ObjectDoesNotExist:
         return CommentPostBadRequest(
             "No object matching content-type %r and object PK %r exists." % \
-                (escape(ctype), escape(object_pk)))
+            (escape(ctype), escape(object_pk)))
     except (ValueError, ValidationError) as e:
         return CommentPostBadRequest(
             "Attempting go get content-type %r and object PK %r exists raised %s" % \
-                (escape(ctype), escape(object_pk), e.__class__.__name__))
+            (escape(ctype), escape(object_pk), e.__class__.__name__))
 
     # Do we want to preview the comment?
     preview = "preview" in data
@@ -79,7 +85,7 @@ def post_comment(request, next=None, using=None):
     if form.security_errors():
         return CommentPostBadRequest(
             "The comment form failed security verification: %s" % \
-                escape(str(form.security_errors())))
+            escape(str(form.security_errors())))
 
     # If there are errors or if we requested a preview show the comment
     if form.errors or preview:
@@ -121,6 +127,9 @@ def post_comment(request, next=None, using=None):
             return CommentPostBadRequest(
                 "comment_will_be_posted receiver %r killed the comment" % receiver.__name__)
 
+    if 'reply_to' in data and len(data['reply_to']) > 0:
+        comment.parent_comment_id = num_decode(data['reply_to'])
+
     # Save the comment and signal that it was saved
     comment.save()
     signals.comment_was_posted.send(
@@ -130,12 +139,14 @@ def post_comment(request, next=None, using=None):
     )
 
     target.touch()
+    messages.add_message(request, messages.SUCCESS, _('Comment successfully added'))
 
     try:
         print(request.POST['next'])
         return http.HttpResponseRedirect(request.POST['next'])
     except IndexError:
         return http.HttpResponseRedirect(reverse('Topics:index'))
+
 
 comment_done = confirmation_view(
     template="comments/posted.html",

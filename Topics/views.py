@@ -5,6 +5,7 @@ from django.utils.translation import ugettext as _
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
+from MyOpinion.templatetags.templating import StaticFile
 import Comments
 
 from .models import Topic, TopicTag, TopicCategory
@@ -29,6 +30,7 @@ def view_topic(request, slug):
         return HttpResponseRedirect(reverse('Topics:index'))
 
     Comments.set_form_user(request.user)
+    StaticFile.js_files.append('comment_reply.js')
 
     context = {
         'topic': topic,

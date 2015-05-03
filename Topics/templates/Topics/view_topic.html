@@ -19,60 +19,35 @@
         </div>
     </div>
 
+    <div class="divider"></div>
+
     <div class="row">
         <div class="col-md-12 col-sm-12">
             {% get_comment_list for topic as topic_comment_list %}
             {% for topic_comment in topic_comment_list %}
-                <div class="row comment-row mg-bottom-sm">
-                    <div class="col-md-12 col-sm-12">
-                        <div class="row">
-                            <div class="col-md-2 col-sm-2">
-                                <div class="comment-image-wrapper">
-                                    {% if topic_comment.user and topic_comment.user.profile.picture %}
-                                        <img src="{{ MEDIA_URL }}{{ topic_comment.user.profile.picture }}"
-                                             alt="{% blocktrans with topic_comment.user.username as username %}Profile image for {{ username }}{% endblocktrans %}"/>
-                                    {% else %}
-                                        <img src="{% static 'images/default-user.png' %}" alt="Anonymous User"/>
-                                    {% endif %}
-                                </div>
-                            </div>
-
-                            <div class="col-md-10 col-sm-10">
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-6">
-                                        <strong>
-                                            {% if topic_comment.user %}
-                                                {{ topic_comment.user.username }}
-                                            {% else %}
-                                                {{ topic_comment.user_name }}
-                                            {% endif %}
-                                        </strong>
-                                    </div>
-
-                                    <div class="col-md-6 col-sm-6 text-right">
-                                        <span class="label label-warning">{{ topic_comment.submit_date|date:'d. F Y H:i' }}</span>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12 col-sm-12">
-                                        <p>
-                                            {{ topic_comment.comment }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% if not topic_comment.parent_comment %}
+                    {% include 'Topics/includes/comment_row.html' with topic_comment=topic_comment margin=0 %}
+                {% endif %}
             {% endfor %}
         </div>
     </div>
 
-    <div class="row" id="comment">
+    <div class="divider"></div>
+
+    {% if request.user.is_authenticated %}
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                {% blocktrans with request.user as user %}
+                    <h4>You are commenting as <strong>{{ user }}</strong></h4>
+                {% endblocktrans %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row comment-form" id="comment">
         <div class="col-md-12 col-sm-12">
             {% get_comment_form for topic as form %}
-            <form action="{% url 'Comments:comments-post-comment' %}" method="POST">
+            <form action="{% url 'Comments:comments-post-comment' %}" method="POST" id="comment-form">
                 <input type="hidden" name="next" value="{{ request.path }}"/>
                 {% csrf_token %}
                 {% bootstrap_form form %}

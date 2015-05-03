@@ -1,0 +1,52 @@
+{% load i18n %}
+{% load integers %}
+{% load bootstrap3 %}
+
+<div class="row comment-row mg-bottom-sm pd-bottom-sm pd-top-sm" id="{{ topic_comment.pk|num_encode }}" style="margin-left: {{ margin }}px;">
+    <div class="col-md-12 col-sm-12">
+        <div class="row">
+            {% include 'Topics/includes/thumbnail.html' with user=topic_comment.user %}
+
+            <div class="col-md-11 col-sm-10">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <strong>
+                            {% if topic_comment.user %}
+                                {{ topic_comment.user.username }}
+                            {% else %}
+                                {{ topic_comment.user_name }}
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 text-right">
+                        <span class="label label-warning">{{ topic_comment.submit_date|date:'d. F Y H:i' }}</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <p>
+                            {{ topic_comment.comment|linebreaks }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <a href="#" onclick="return setReplyTo($(this));" class="reply-btn">
+                            {% bootstrap_icon 'share-alt' %}
+                            {% trans 'Reply' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if topic_comment.children_comment_set.all|length > 0 %}
+    {% for children_comment in topic_comment.children_comment_set.all %}
+        {% include 'Topics/includes/comment_row.html' with topic_comment=children_comment margin=70 %}
+    {% endfor %}
+{% endif %}

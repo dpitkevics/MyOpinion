@@ -1,0 +1,13 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<div class="col-md-1 col-sm-2">
+    <div class="comment-image-wrapper">
+        {% if user and user.profile.picture %}
+            <img src="{{ MEDIA_URL }}{{ user.profile.picture }}"
+                 alt="{% blocktrans with user.username as username %}Profile image for {{ username }}{% endblocktrans %}"/>
+        {% else %}
+            <img src="{% static 'images/default-user.png' %}" alt="Anonymous User"/>
+        {% endif %}
+    </div>
+</div>

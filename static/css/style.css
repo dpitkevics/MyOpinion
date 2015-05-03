@@ -15,12 +15,20 @@ a:hover {
     padding-bottom: 10px;
 }
 
-.topic-box:hover {
+.topic-box:hover, .comment-active {
     background: rgba(0, 171, 144, 0.07);
 }
 
 .mg-bottom-sm {
     margin-bottom: 10px;
+}
+
+.pd-top-sm {
+    padding-top: 10px;
+}
+
+.pd-bottom-sm {
+    padding-bottom: 10px;
 }
 
 .comment-image-wrapper > img {
