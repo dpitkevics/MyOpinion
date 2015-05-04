@@ -142,7 +142,6 @@ def post_comment(request, next=None, using=None):
     messages.add_message(request, messages.SUCCESS, _('Comment successfully added'))
 
     try:
-        print(request.POST['next'])
         return http.HttpResponseRedirect(request.POST['next'])
     except IndexError:
         return http.HttpResponseRedirect(reverse('Topics:index'))

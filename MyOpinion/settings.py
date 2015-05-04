@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'MyOpinion',
     'Users',
     'Topics',
+    'ThreadedComments',
     'Comments',
 )
 
@@ -133,4 +134,4 @@ BOOTSTRAP3 = {
 
 # Comments Configuration
 COMMENTS_ALLOW_PROFANITIES = True
-COMMENTS_APP = 'Comments'
+COMMENTS_APP = 'ThreadedComments'

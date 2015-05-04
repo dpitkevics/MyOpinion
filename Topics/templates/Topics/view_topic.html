@@ -2,7 +2,7 @@
 
 {% load i18n %}
 {% load settings %}
-{% load comments %}
+{% load threadedcomments_tags %}
 {% load bootstrap3 %}
 {% load staticfiles %}
 
@@ -23,12 +23,13 @@
 
     <div class="row">
         <div class="col-md-12 col-sm-12">
-            {% get_comment_list for topic as topic_comment_list %}
-            {% for topic_comment in topic_comment_list %}
-                {% if not topic_comment.parent_comment %}
-                    {% include 'Topics/includes/comment_row.html' with topic_comment=topic_comment margin=0 %}
-                {% endif %}
-            {% endfor %}
+            {% render_comment_list for topic %}
+{#            {% get_comment_list for topic as topic_comment_list %}#}
+{#            {% for topic_comment in topic_comment_list %}#}
+{#                {% if not topic_comment.parent_comment %}#}
+{#                    {% include 'Topics/includes/comment_row.html' with topic_comment=topic_comment margin=0 %}#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
         </div>
     </div>
 
@@ -46,18 +47,19 @@
 
     <div class="row comment-form" id="comment">
         <div class="col-md-12 col-sm-12">
-            {% get_comment_form for topic as form %}
-            <form action="{% url 'Comments:comments-post-comment' %}" method="POST" id="comment-form">
-                <input type="hidden" name="next" value="{{ request.path }}"/>
-                {% csrf_token %}
-                {% bootstrap_form form %}
-
-                {% buttons %}
-                    <button type="submit" class="btn btn-primary">
-                        {% bootstrap_icon "envelope" %} {% trans 'Add Comment' %}
-                    </button>
-                {% endbuttons %}
-            </form>
+            {% render_comment_form for topic %}
+{#            {% get_comment_form for topic as form %}#}
+{#            <form action="{% url 'Comments:comments-post-comment' %}" method="POST" id="comment-form">#}
+{#                <input type="hidden" name="next" value="{{ request.path }}"/>#}
+{#                {% csrf_token %}#}
+{#                {% bootstrap_form form %}#}
+{##}
+{#                {% buttons %}#}
+{#                    <button type="submit" class="btn btn-primary">#}
+{#                        {% bootstrap_icon "envelope" %} {% trans 'Add Comment' %}#}
+{#                    </button>#}
+{#                {% endbuttons %}#}
+{#            </form>#}
         </div>
     </div>
 {% endblock %}

@@ -19,7 +19,7 @@
             <h1>{% trans "Preview your comment" %}</h1>
             <blockquote>{{ comment|linebreaks }}</blockquote>
             <p>
-                {% trans "and" %} <input type="submit" name="submit" class="submit-post"
+                {% trans "and" %} <input type="submit" name="submit" class="btn btn-primary"
                                          value="{% trans "Post your comment" %}"
                                          id="submit"/> {% trans "or make changes" %}:
             </p>
@@ -27,8 +27,11 @@
         {% bootstrap_form form %}
 
         {% buttons %}
-            <button type="submit" class="btn btn-primary">
-                {% bootstrap_icon "envelope" %} {% trans 'Post' %}
+            <button type="submit" name="post" class="btn btn-primary">
+                {% bootstrap_icon "envelope" %} {% trans 'Add Comment' %}
+            </button>
+            <button type="submit" name="preview" class="btn btn-primary">
+                {% bootstrap_icon "eye-open" %} {% trans 'Preview' %}
             </button>
         {% endbuttons %}
     </form>

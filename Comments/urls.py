@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 from .views import comments, moderation
 
-urlpatterns = patterns('django_comments.views',
+urlpatterns = patterns('Comments.views',
     url(r'^post/$',          comments.post_comment,       name='comments-post-comment'),
     url(r'^posted/$',        comments.comment_done,       name='comments-comment-done'),
     url(r'^flag/(\d+)/$',    moderation.flag,             name='comments-flag'),
