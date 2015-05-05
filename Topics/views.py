@@ -74,7 +74,7 @@ def search_topics(request):
                                            '%%%s%%' % request.GET.get('search_query'),
                                        ])
     topic_list = list(raw_topic_list)
-    print(raw_topic_list.query)
+
     paginator = Paginator(topic_list, 20)
 
     page = request.GET.get('page')
