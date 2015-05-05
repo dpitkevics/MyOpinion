@@ -1,6 +1,8 @@
 {% load i18n %}
 {% load bootstrap3 %}
-{% load comments %}
+{% load disqus %}
+
+{% get_forum_url request topic.slug as forum_url %}
 
 <div class="row">
     <div class="col-md-12 col-sm-12">
@@ -18,16 +20,22 @@
 
 <div class="row">
     <div class="col-md-6 col-sm-12">
-        {% get_comment_count for topic as topic_comment_count %}
-        {% blocktrans with topic_comment_count=topic_comment_count %}
+        {% get_comment_count forum_url as comment_count %}
+        {% blocktrans with topic_comment_count=comment_count %}
             Comments: <span class="label label-success">{{ topic_comment_count }}</span>
         {% endblocktrans %}
     </div>
 
     <div class="col-md-6 col-sm-12 text-right">
-        {% blocktrans with latest_action_at=topic.latest_action_at|date:'d. F Y H:i' %}
-            Latest action: <span class="label label-warning">{{ latest_action_at }}</span>
-        {% endblocktrans %}
+        {% get_latest_action forum_url as latest_action %}
+        {% trans 'Latest action' %}:
+        <span class="label label-warning">
+            {% if latest_action == None %}
+                {% trans 'None' %}
+            {% else %}
+                {{ latest_action|date:'d. F Y H:i' }}
+            {% endif %}
+        </span>
     </div>
 </div>
 
@@ -45,15 +53,6 @@
         {% trans 'Category' %}:
         <a href="{% url 'Topics:view_by_category' slug=topic.category.slug %}" class="span-link">
             <span class="label label-primary">{{ topic.category }}</span>
-        </a>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12 col-sm-12 text-center">
-        <a href="{% url 'Topics:view_opinion' slug=topic.slug %}#comment" class="btn btn-primary">
-            {% bootstrap_icon 'pencil' %}
-            {% trans 'Add your opinion to discussion' %}
         </a>
     </div>
 </div>

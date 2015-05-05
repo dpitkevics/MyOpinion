@@ -8,7 +8,6 @@ from Users.models import UserProfile
 
 
 class UserCreationForm(BaseUserCreationForm):
-
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
 
@@ -19,6 +18,7 @@ class UserCreationForm(BaseUserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
+
 
 class UserChangeForm(BaseUserChangeForm):
     class Meta:

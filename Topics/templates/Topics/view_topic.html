@@ -2,7 +2,6 @@
 
 {% load i18n %}
 {% load settings %}
-{% load threadedcomments_tags %}
 {% load bootstrap3 %}
 {% load staticfiles %}
 
@@ -19,47 +18,24 @@
         </div>
     </div>
 
-    <div class="divider"></div>
-
     <div class="row">
         <div class="col-md-12 col-sm-12">
-            {% render_comment_list for topic %}
-{#            {% get_comment_list for topic as topic_comment_list %}#}
-{#            {% for topic_comment in topic_comment_list %}#}
-{#                {% if not topic_comment.parent_comment %}#}
-{#                    {% include 'Topics/includes/comment_row.html' with topic_comment=topic_comment margin=0 %}#}
-{#                {% endif %}#}
-{#            {% endfor %}#}
-        </div>
-    </div>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                /* * * CONFIGURATION VARIABLES * * */
+                var disqus_shortname = 'shareyouropinion';
 
-    <div class="divider"></div>
-
-    {% if request.user.is_authenticated %}
-        <div class="row">
-            <div class="col-md-12 col-sm-12">
-                {% blocktrans with request.user as user %}
-                    <h4>You are commenting as <strong>{{ user }}</strong></h4>
-                {% endblocktrans %}
-            </div>
-        </div>
-    {% endif %}
-
-    <div class="row comment-form" id="comment">
-        <div class="col-md-12 col-sm-12">
-            {% render_comment_form for topic %}
-{#            {% get_comment_form for topic as form %}#}
-{#            <form action="{% url 'Comments:comments-post-comment' %}" method="POST" id="comment-form">#}
-{#                <input type="hidden" name="next" value="{{ request.path }}"/>#}
-{#                {% csrf_token %}#}
-{#                {% bootstrap_form form %}#}
-{##}
-{#                {% buttons %}#}
-{#                    <button type="submit" class="btn btn-primary">#}
-{#                        {% bootstrap_icon "envelope" %} {% trans 'Add Comment' %}#}
-{#                    </button>#}
-{#                {% endbuttons %}#}
-{#            </form>#}
+                /* * * DON'T EDIT BELOW THIS LINE * * */
+                (function () {
+                    var dsq = document.createElement('script');
+                    dsq.type = 'text/javascript';
+                    dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+                powered by Disqus.</a></noscript>
         </div>
     </div>
 {% endblock %}

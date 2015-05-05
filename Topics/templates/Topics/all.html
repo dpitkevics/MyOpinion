@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load settings %}
+{% load i18n %}
+
+{% block title %}{% title 'All Topics' %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <h1>{% trans 'All Topics' %}</h1>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="row">
+                {% if topic_list|length > 0 %}
+                    {% for topic in topic_list %}
+                        <div class="col-md-6 col-sm-12 topic-box">
+                            {% include 'Topics/includes/topic_view.html' with topic=topic %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-md-6 col-sm-12">
+                        <p>
+                            {% trans 'No topics found' %}
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if topic_list.has_other_pages %}
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <nav>
+                    <ul class="pagination">
+                        {% if topic_list.has_previous %}
+                            <li>
+                                <a href="?page={{ topic_list.previous_page_number }}">&laquo;</a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in topic_list.paginator.page_range %}
+                            {% ifequal num topic_list.number %}
+                                <li class="active">
+                                    <a href="#">{{ num }} <span class="sr-only">(current)</span></a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endifequal %}
+                        {% endfor %}
+
+                        {% if topic_list.has_next %}
+                            <li>
+                                <a href="?page={{ topic_list.next_page_number }}">&raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

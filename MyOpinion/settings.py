@@ -32,6 +32,13 @@ ALLOWED_HOSTS = []
 APP_NAME = 'My Opinion'
 SITE_ID = 1
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'cache_table',
+    }
+}
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,11 +48,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'bootstrap3',
     'django.contrib.sites',
+    'Disqus',
     'MyOpinion',
     'Users',
     'Topics',
-    'ThreadedComments',
-    'Comments',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -135,3 +141,8 @@ BOOTSTRAP3 = {
 # Comments Configuration
 COMMENTS_ALLOW_PROFANITIES = True
 COMMENTS_APP = 'ThreadedComments'
+
+# Disqus API Configuration
+DISQUS_SECRET_KEY = 'mKw9lxZrcp07v7Oyzd2XRxHn7pYagI6O5HMBK7uEHOOiI6cwe6BtmRC7myFLTqUv'
+DISQUS_PUBLIC_KEY = 'h5blhpvO4gPY3AsC8h3ZcNScUIB4OOXA7X7os4Yd4cc6oMTx3jGBHm6W19iRnZMy'
+DISQUS_FORUM_NAME = 'shareyouropinion'

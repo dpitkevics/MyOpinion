@@ -3,3 +3,5 @@ mysqlclient
 django-bootstrap3
 Pillow
 hashids
+pytz
+tzlocal

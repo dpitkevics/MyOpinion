@@ -4,21 +4,93 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from Disqus import DisqusAPI
+from MyOpinion import settings
 
 from MyOpinion.templatetags.templating import StaticFile
-import Comments
 
 from .models import Topic, TopicTag, TopicCategory
 
 
 def index(request):
-    topic_list = Topic.objects.all()[:5]
+    topic_list = Topic.objects.all()[:20]
 
     context = {
         'topic_list': topic_list,
     }
 
     return render(request, 'Topics/index.html', context)
+
+
+def trending(request):
+    disqus = DisqusAPI(settings.DISQUS_SECRET_KEY, settings.DISQUS_PUBLIC_KEY)
+    popular_threads = disqus.get('threads.listPopular', forum=settings.DISQUS_FORUM_NAME, method='get')
+
+    topic_list = []
+    for popular_thread in popular_threads:
+        try:
+            title = popular_thread['clean_title_unescaped']
+            topic = Topic.objects.get(title=title)
+            topic_list.append(topic)
+        except ObjectDoesNotExist:
+            pass
+
+    context = {
+        'topic_list': topic_list,
+    }
+
+    return render(request, 'Topics/trending.html', context)
+
+
+def all_topics(request):
+    topic_list = Topic.objects.all()
+    paginator = Paginator(topic_list, 20)
+
+    page = request.GET.get('page')
+
+    try:
+        topics = paginator.page(page)
+    except PageNotAnInteger:
+        topics = paginator.page(1)
+    except EmptyPage:
+        topics = paginator.page(paginator.num_pages)
+
+    context = {
+        'topic_list': topics,
+    }
+
+    return render(request, 'Topics/all.html', context)
+
+
+def search_topics(request):
+    raw_topic_list = Topic.objects.raw("SELECT * "
+                                       "FROM topics_topic "
+                                       "WHERE title LIKE %s "
+                                       "OR description LIKE %s",
+                                       [
+                                           '%%%s%%' % request.GET.get('search_query'),
+                                           '%%%s%%' % request.GET.get('search_query'),
+                                       ])
+    topic_list = list(raw_topic_list)
+    print(raw_topic_list.query)
+    paginator = Paginator(topic_list, 20)
+
+    page = request.GET.get('page')
+
+    try:
+        topics = paginator.page(page)
+    except PageNotAnInteger:
+        topics = paginator.page(1)
+    except EmptyPage:
+        topics = paginator.page(paginator.num_pages)
+
+    context = {
+        'topic_list': topics,
+    }
+
+    return render(request, 'Topics/all.html', context)
 
 
 def view_topic(request, slug):
@@ -29,7 +101,6 @@ def view_topic(request, slug):
 
         return HttpResponseRedirect(reverse('Topics:index'))
 
-    Comments.set_form_user(request.user)
     StaticFile.js_files.append('comment_reply.js')
 
     context = {
